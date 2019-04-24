@@ -30,9 +30,9 @@ export default new Router({
       iconCls: 'el-icon-news',//图标样式class
       children: [
           { path: '/', component: capability_type, name: '能力类型管理'},
-          { path: '/capability_engine', component: capability_engine, name: '能力引擎管理' },
-          { path: '/capability_units', component: capability_units, name: '能力单元管理' },
-          { path: '/capability_engineversion', component: capability_engineversion, name: '能力引擎版本管理' },  
+          // { path: '/capability_engine', component: capability_engine, name: '能力引擎管理' },
+          // { path: '/capability_units', component: capability_units, name: '能力单元管理' },
+          // { path: '/capability_engineversion', component: capability_engineversion, name: '能力引擎版本管理' },  
       ]
     },
      {
@@ -55,7 +55,7 @@ export default new Router({
         iconCls: 'el-icon-setting',//图标样式class
         children: [
             // { path: '/editTabel', component: editTabel,  hidden: true },
-            { path: '/editTabel', component: editTabel, name: '特征库维护' },
+             { path: '/editTabel', component: editTabel, name: '特征库维护' },
             // { path: '/admin', component: admin, name: '特征类型维护' },
             // { path: '/Test', component: Test, name: '特征信息维护' },
         ]
@@ -66,7 +66,7 @@ export default new Router({
         name:'公共服务接口管理',
         iconCls: 'el-icon-menu',//图标样式class
         children: [
-            { path: '/manage_interface', component: manage_interface,name:'接口管理'},
+            // { path: '/manage_interface', component: manage_interface,name:'接口管理'},
            
         ]
       },

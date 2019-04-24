@@ -2,7 +2,7 @@
   "name": "lishengface",
   "version": "1.0.0",
   "description": "力生人脸识别demo，基于vue",
-  "author": "李晓盼",
+  "author": "Jerry",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -22,7 +22,9 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mockjs": "^1.0.1-beta3",
+    "qs": "^6.7.0",
     "vue": "^2.5.2",
+    "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0",
     "xlsx": "^0.14.1"

@@ -1,7 +1,7 @@
 <template>
-<el-main>
+<el-main :style="{height:isminHeight-60+'px'}">
   <breadcrumb></breadcrumb>
-  <section class="app-main">
+  <section class="app-main" >
     <transition name="fade" mode="out-in">
         <router-view></router-view>
     </transition>
@@ -11,6 +11,7 @@
 
 <script>
 import breadcrumb from '@/components/nx-breadcrumb'
+import {mapGetters,mapActions} from 'vuex'
 export default{
     components:{
 			breadcrumb
@@ -20,32 +21,27 @@ export default{
 			
 			}
     },
-     mounted(){
-      this.getHeight();
-      // 数据首次加载完后 → 获取宽度，并设置其高度
-    this.$nextTick(() => {
-      this.getHeight();
-    })
+    mounted(){
+      this.sidebar.minheight=document.documentElement.clientHeight;
+       this.$nextTick(() => {
+        this.sidebar.minheight=document.documentElement.clientHeight;
+      })
     // 挂载 reisze 事件 → 屏幕缩放时监听宽度变化
     window.onresize = () => {
         return (() => {
-            this.$nextTick(() => {
-              this.getHeight();
-            })
+           this.sidebar.minheight=document.documentElement.clientHeight;
         })()
     }
 
    },
 		methods:{
-      getHeight(){
-        setTimeout(()=>{
-          var h=document.documentElement.clientHeight;//可见区域高度
-          document.querySelector('.el-main').style.height=h-60+'px';
-       },200)
-      }
+     
 		},
 		computed: {
-
+      ...mapGetters(['sidebar']),
+      isminHeight(){
+        return this.sidebar.minheight
+      }
 		},
 	
 

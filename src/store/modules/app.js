@@ -4,13 +4,15 @@ const app = {
   state: {
     sidebar: {
       opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
-      withoutAnimation: false
+      withoutAnimation: false,
+      minheight:document.documentElement.clientHeight
     },
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
       state.sidebar.opened = !state.sidebar.opened
       state.sidebar.withoutAnimation = false
+      state.sidebar.minheight=document.documentElement.clientHeight;
       if (state.sidebar.opened) {
         Cookies.set('sidebarStatus', 1)
       } else {
