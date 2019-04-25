@@ -4,7 +4,8 @@
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index)  in levelList" :key="item.path" v-if="item.name">
         <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{item.name}}</span>
-        <router-link v-else :to="item.redirect||item.path"> <span class="el-icon-location">当前位置：</span>{{item.name}}</router-link>
+        <span v-else> <span class="el-icon-location">当前位置：</span>{{item.name}}</span>
+      <!-- :to="item.redirect||item.path" -->
       </el-breadcrumb-item>
     </transition-group> 
   </el-breadcrumb>

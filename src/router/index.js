@@ -3,8 +3,6 @@ import Router from 'vue-router'
 
 // 懒加载方式，当路由被访问的时候才加载对应组件
 const Home = resolve => require(['@/views/layout/Layout'], resolve)
-const table = resolve => require(['@/components/Table.vue'], resolve)
-const admin = resolve => require(['@/views/admintest'], resolve)
 const capability_type = resolve => require(['@/views/access/capability_type'], resolve)
 const capability_engineversion = resolve => require(['@/views/access/capability_engineversion'], resolve)
 const capability_units = resolve => require(['@/views/access/capability_units'], resolve)
@@ -16,20 +14,20 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //     path: '/',
-    //     component: login,
-    //     //redirect: 'login',
-    //     name: '',
-    //     hidden: true
-    // },
+       {
+       path: '/',
+         component: login,
+         //redirect: 'login',
+        name: '',
+        hidden: true
+    },
     {
-      path: '/',
+      path: '/Home',
       component: Home,
       name:'能力接入管理',
       iconCls: 'el-icon-news',//图标样式class
       children: [
-          { path: '/', component: capability_type, name: '能力类型管理'},
+          { path: '/capability_type', component: capability_type, name: '能力类型管理'},
           // { path: '/capability_engine', component: capability_engine, name: '能力引擎管理' },
           // { path: '/capability_units', component: capability_units, name: '能力单元管理' },
           // { path: '/capability_engineversion', component: capability_engineversion, name: '能力引擎版本管理' },  

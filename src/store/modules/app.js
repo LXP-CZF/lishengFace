@@ -5,14 +5,14 @@ const app = {
     sidebar: {
       opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
       withoutAnimation: false,
-      minheight:document.documentElement.clientHeight
+      height:document.documentElement.clientHeight
     },
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
       state.sidebar.opened = !state.sidebar.opened
       state.sidebar.withoutAnimation = false
-      state.sidebar.minheight=document.documentElement.clientHeight;
+      state.sidebar.height=document.documentElement.clientHeight;
       if (state.sidebar.opened) {
         Cookies.set('sidebarStatus', 1)
       } else {
@@ -24,7 +24,9 @@ const app = {
       state.sidebar.opened = false
       state.sidebar.withoutAnimation = withoutAnimation
     },
-   
+   GETHEIGHT:state=>{
+    state.sidebar.height=document.documentElement.clientHeight;
+   }
   },
   actions: {
     toggleSideBar({ commit }) {
@@ -32,6 +34,9 @@ const app = {
     },
     closeSideBar({ commit }, { withoutAnimation }) {
       commit('CLOSE_SIDEBAR', withoutAnimation)
+    },
+   getheight({ commit }) {
+      commit('GETHEIGHT')
     },
     
   }

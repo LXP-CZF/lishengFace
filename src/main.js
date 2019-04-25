@@ -14,7 +14,7 @@ import 'babel-polyfill'
 // Mock.bootstrap();
 
 // 创建全局的 axios 默认值
-axios.defaults.baseURL = 'http://192.168.2.180:9999';
+axios.defaults.baseURL = 'http://192.168.2.150:9999';
 axios.defaults.timeout = 5000; // request timeout,现在，在超时前，所有请求都会等待 5 秒
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
  

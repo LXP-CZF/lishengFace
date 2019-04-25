@@ -1,5 +1,5 @@
 <template>
-<el-main :style="{height:isminHeight-60+'px'}">
+<el-main :style="{height:isHeight-60+'px'}">
   <breadcrumb></breadcrumb>
   <section class="app-main" >
     <transition name="fade" mode="out-in">
@@ -22,25 +22,25 @@ export default{
 			}
     },
     mounted(){
-      this.sidebar.minheight=document.documentElement.clientHeight;
+      this.getheight();
        this.$nextTick(() => {
-        this.sidebar.minheight=document.documentElement.clientHeight;
+        this.getheight();
       })
     // 挂载 reisze 事件 → 屏幕缩放时监听宽度变化
     window.onresize = () => {
         return (() => {
-           this.sidebar.minheight=document.documentElement.clientHeight;
+           this.getheight();
         })()
     }
 
    },
 		methods:{
-     
+     ...mapActions(['getheight'])
 		},
 		computed: {
       ...mapGetters(['sidebar']),
-      isminHeight(){
-        return this.sidebar.minheight
+      isHeight(){
+        return this.sidebar.height
       }
 		},
 	
