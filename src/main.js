@@ -10,13 +10,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css';
 import store from './store'
 import 'babel-polyfill'
+import promise from 'es6-promise';
+promise.polyfill();
 // import Mock from './mock'
 // Mock.bootstrap();
 
 // 创建全局的 axios 默认值
-axios.defaults.baseURL = 'http://192.168.2.150:9999';
+axios.defaults.baseURL = '/api';
+// axios.defaults.baseURL = process.env.API_HOST;
 axios.defaults.timeout = 5000; // request timeout,现在，在超时前，所有请求都会等待 5 秒
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
  
 Vue.prototype.$axios = axios
 

@@ -8,16 +8,16 @@
           </div>
         </el-col>
         <el-col :span="8">
-          <el-form  :model="loginForm" :rules="rules"  ref="loginForm" label-position="left" label-width="0px"  class="demo-ruleForm login-container" id="formdiv">
+          <el-form  :model="loginForm" :rules="rulesForm"  ref="loginForm" label-position="left" label-width="0px"  class="demo-ruleForm login-container" id="formdiv">
             <h3 class="title">系统登录</h3>
             <!-- <span class="title"><i class="iconfont icon-icon_boss"></i></span> -->
             <el-form-item prop="username">
-              <el-input type="text" v-model="loginForm.userName" auto-complete="off"  placeholder="用户名" class="noborder">
+              <el-input type="text" v-model="loginForm.username" auto-complete="off"  placeholder="用户名" class="noborder">
                 <i slot="prefix" class="el-icon-service iconColor"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input  type="password" v-model="loginForm.passWord"  placeholder="密码" auto-complete="off" show-password>
+              <el-input  type="password" v-model="loginForm.password"  placeholder="密码" auto-complete="off" show-password>
                 <i slot="prefix" class="el-icon-view iconColor"></i>
               </el-input>
             </el-form-item>
@@ -49,25 +49,23 @@ export default {
     return {
       logining: false,
       loginForm: {
-        userName: "",
-        passWord: ""
+        username: "",
+        password: ""
       },
       // userToken: "",
-      rules: {
-        userName: [
+      rulesForm: {
+        username: [
           {required: true, message: "请输入账号", trigger: "blur" },
           {validator: validateInput, trigger: ["blur", "change"] },
           {pattern:/^[A-Za-z0-9]+$/,message: "用户名不能为中文", trigger: ["blur", "change"] },
-          // {pattern:/^[^ ]+$/,message: "用户名不能含有空格", trigger: ["blur", "change"] },
           { min:3,max:13, message: "请输入正确的账号格式，长度3~13个字符", trigger: ["blur"]}
          
         ],
-        passWord: [
+        password: [
           { required: true, message: "请输入密码", trigger: "blur" },
           {validator: validateInput, trigger: ["blur", "change"] },
           {pattern:/^[A-Za-z0-9]+$/,message: "密码不能为中文", trigger: ["blur", "change"] },
-          // {pattern:/^[^ ]+$/,message: "密码不能含有空格", trigger: ["blur", "change"] },
-          { min:5,max:13, message: "请输入正确的密码格式，长度6~13个字符", trigger: ["blur"]}
+          { min:5,max:13, message: "请输入正确的密码格式，长度5~13个字符", trigger: ["blur"]}
         ]
       },
       checked: false,
@@ -92,8 +90,8 @@ export default {
       })();
     };
     //用户选择记住密码时，下次打开登录页通过cookie自动获取用户名和密码
-    this.loginForm.userName = getName("name");
-    this.loginForm.passWord = getPassword("password");
+    this.loginForm.username = getName("name");
+    this.loginForm.password = getPassword("password");
   },
   methods: {
     ...mapActions(['getheight']),
@@ -108,8 +106,8 @@ export default {
         if (valid) {
           this.logining = true;
           this.$axios.post('/webgame/login/login',{
-            "name": this.loginForm.userName,
-            "password": this.loginForm.passWord
+            "name": this.loginForm.username,
+            "password": this.loginForm.password
           }).then((res) => {
             this.logining = false;
             let msg = res.data.msg;
@@ -123,17 +121,18 @@ export default {
             } else {
               localStorage.setItem('sysUserName',res.data.data.name);
               if (this.checked === true) {//如果选择记住密码，就保存cookie
-                setName(this.loginForm.userName);
-                setPassword(this.loginForm.passWord);
+                setName(this.loginForm.username);
+                setPassword(this.loginForm.password);
               } else {
                 setName("");
                 setPassword("");
-                this.loginForm.userName = '';
-                this.loginForm.passWord = '';
+              
               }
               this.$router.push({ path: "/capability_type" });
             }
-          });
+          }).catch(function (error) {
+					console.log(error)
+				});
         } else {
           console.log("error submit!!");
           return false;

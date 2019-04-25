@@ -151,7 +151,7 @@
 						{ required: true, message: "请输入密码", trigger: "blur" },
 						{validator: validateInput, trigger: ["blur", "change"] },
 						{pattern:/^[A-Za-z0-9]+$/,message: "密码不能为中文", trigger: ["blur", "change"] },
-						{ min:5,max:13, message: "请输入正确的密码格式，长度6~13个字符", trigger: ["blur"]}
+						{ min:5,max:13, message: "请输入正确的密码格式，长度5~13个字符", trigger: ["blur"]}
 					]
 				},
 				//编辑界面数据
@@ -178,7 +178,7 @@
 						{validator: validateInput, trigger: ["blur", "change"] },
 						{pattern:/^[A-Za-z0-9]+$/,message: "密码不能为中文", trigger: ["blur", "change"] },
 						// {pattern:/^[^ ]+$/,message: "密码不能含有空格", trigger: ["blur", "change"] },
-						{ min:5,max:13, message: "请输入正确的密码格式，长度6~13个字符", trigger: ["blur"]}
+						{ min:5,max:13, message: "请输入正确的密码格式，长度5~13个字符", trigger: ["blur"]}
 					]
 				},
 				//新增界面数据
@@ -254,13 +254,13 @@
 							type: 'success'
 						});
 						this.getUsers();
-					});
-				}).catch(() => {
+					}).catch(() => {
            this.$message({
 							message: '该用户不可删除',
 							type: 'error'
 						});
 				});
+				})
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
