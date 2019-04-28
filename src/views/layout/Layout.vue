@@ -6,6 +6,7 @@
         <vueaside></vueaside>
         </div>
         <div style="overflow:hidden;"> 
+        <tagsView></tagsView>
        <vuemain></vuemain>
        </div>
       </div>
@@ -24,12 +25,14 @@
 <script>
   import vueaside from '@/views/layout/sidebar/aside'
   import vueheader from '@/views/layout/header'
+  import tagsView from '@/views/layout/TagsView'
   import vuemain from '@/views/layout/AppMain'
 	export default{
     components:{
           vueaside,
           vueheader,
-          vuemain
+          vuemain,
+          tagsView
 	    },
 		data(){
 			return{

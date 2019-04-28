@@ -1,7 +1,7 @@
 <template>
 <!--侧边栏-->
 <div>
-<el-menu :default-active="activeIndex" class="el-menu-vertical-demo" :unique-opened="true" :style="{height:isHeight-60+'px'}" background-color="#304156" text-color="#bfcbd9" active-text-color="#ffd04b"  :collapse="isCollapse" router>
+<el-menu :default-active="activeIndex" class="el-menu-vertical-demo"  :style="{height:isHeight-36+'px'}" background-color="#304156" text-color="#bfcbd9" active-text-color="#ffd04b"  :collapse="isCollapse" router>
  <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
     <el-submenu :index="index+''" v-if="!item.leaf">
       <template slot="title"><i :class="item.iconCls"></i><span>{{item.name}}</span></template>
@@ -36,13 +36,6 @@
    },
 		methods:{
       ...mapActions(['getheight'])
-			//   getclientHeight(){
-      //     setTimeout(()=>{
-      //       // var h=document.documentElement.clientHeight;//可见区域高度
-      //       document.querySelector('.el-menu-vertical-demo').style.minHeight=this.sidebar.minheight-60+"px";
-      //   },20)
-        
-      // }
     },
      computed:{
       activeIndex(){

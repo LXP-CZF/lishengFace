@@ -131,7 +131,10 @@ export default {
               this.$router.push({ path: "/capability_type" });
             }
           }).catch(function (error) {
-					console.log(error)
+              this.$message({
+                      message: error,
+                      type: "error"
+                    });
 				});
         } else {
           console.log("error submit!!");

@@ -1,6 +1,7 @@
 <template>
-<el-main :style="{height:isHeight-60+'px'}">
-  <breadcrumb></breadcrumb>
+<el-main :style="{height:isHeight-36+'px'}">
+  <!-- <breadcrumb></breadcrumb> -->
+  <!-- <tagsView></tagsView> -->
   <section class="app-main" >
     <transition name="fade" mode="out-in">
         <router-view></router-view>
@@ -11,10 +12,12 @@
 
 <script>
 import breadcrumb from '@/components/nx-breadcrumb'
+ import tagsView from '@/views/layout/TagsView'
 import {mapGetters,mapActions} from 'vuex'
 export default{
     components:{
-			breadcrumb
+      breadcrumb,
+      tagsView
 		},
 		data(){
 			return{
@@ -49,7 +52,7 @@ export default{
 
 </script>
 <style>
-.el-main{padding: 0px !important;margin:0 auto;width: 100%;overflow-x: hidden}
-.app-main{width: 100%;overflow-x: hidden;    margin: 20px 1% 10px 1.5%;}
+.el-main{padding: 0px !important;margin:0 auto;width: 100%;overflow-x: hidden !important;}
+.app-main{width: 100%;overflow-x: hidden;    margin: 20px 1% 35px 1.5%;}
 </style>
 

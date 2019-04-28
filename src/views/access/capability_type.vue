@@ -24,12 +24,12 @@
 		</el-col>
 		<!--列表-->
 		<h3>{{title}}</h3>
-		<el-table size="mini" :data="users" highlight-current-row v-loading="listLoading"  :default-sort = "{prop: 'id', order: 'descending'}" style="width: 97%; margin-top: 7px;">
+		<el-table size="mini" :data="users" highlight-current-row v-loading="listLoading"  :default-sort="{prop: 'id', order: 'descending'}" style="width: 97%; margin-top: 7px;">
 			<el-table-column type="selection" width="100">
 			</el-table-column>
-			<el-table-column prop="id" label="ID号"   width="160" >
+			<el-table-column  prop="id" label="ID"   width="160" sortable>
 			</el-table-column>
-			<el-table-column prop="name" :label="username" width="170" sortable>
+			<el-table-column prop="name" :label="username" width="170" >
 			</el-table-column>
 			<el-table-column prop="password" :label="password" width="230" :formatter="formatPassword">
 			</el-table-column>
@@ -37,7 +37,7 @@
 			</el-table-column>
 			<el-table-column prop="state" :label="state" :formatter="formatState">
 			</el-table-column> 
-			<el-table-column label="操作" >
+			<el-table-column label="操作" width="150" fixed="right">
 				<template scope="scope">
 					<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 					<el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -142,10 +142,10 @@
 				editLoading: false,
 				editFormRules: {
 					name: [
-					 {required: true, message: "请输入用户名", trigger: "blur" },
-          {validator: validateInput, trigger: ["blur", "change"] },
-          {pattern:/^[A-Za-z0-9]+$/,message: "用户名不能为中文", trigger: ["blur", "change"] },
-          { min:3,max:13, message: "请输入正确的账号格式，长度3~13个字符", trigger: ["blur"]}
+						{required: true, message: "请输入用户名", trigger: "blur" },
+						{validator: validateInput, trigger: ["blur", "change"] },
+						{pattern:/^[A-Za-z0-9]+$/,message: "用户名不能为中文", trigger: ["blur", "change"] },
+						{ min:3,max:13, message: "请输入正确的账号格式，长度3~13个字符", trigger: ["blur"]}
 					],
 					password: [
 						{ required: true, message: "请输入密码", trigger: "blur" },
@@ -168,16 +168,14 @@
 				addFormRules: {
 					name: [
 						{required: true, message: "请输入用户名", trigger: "blur" },
-          {validator: validateInput, trigger: ["blur", "change"] },
-          {pattern:/^[A-Za-z0-9]+$/,message: "用户名不能为中文", trigger: ["blur", "change"] },
-          // {pattern:/^[^ ]+$/,message: "用户名不能含有空格", trigger: ["blur", "change"] },
-          { min:3,max:13, message: "请输入正确的账号格式，长度3~13个字符", trigger: ["blur"]}
+						{validator: validateInput, trigger: ["blur", "change"] },
+						{pattern:/^[A-Za-z0-9]+$/,message: "用户名不能为中文", trigger: ["blur", "change"] },
+						{ min:3,max:13, message: "请输入正确的账号格式，长度3~13个字符", trigger: ["blur"]}
 					],
 					password: [
 						{ required: true, message: "请输入密码", trigger: "blur" },
 						{validator: validateInput, trigger: ["blur", "change"] },
 						{pattern:/^[A-Za-z0-9]+$/,message: "密码不能为中文", trigger: ["blur", "change"] },
-						// {pattern:/^[^ ]+$/,message: "密码不能含有空格", trigger: ["blur", "change"] },
 						{ min:5,max:13, message: "请输入正确的密码格式，长度5~13个字符", trigger: ["blur"]}
 					]
 				},
@@ -211,7 +209,7 @@
 			},
 			//密码显示转换
 			formatPassword: function (row, column) {
-				return row.password == null ? '未设置密码' : row.password;
+				return row.password == '' ? '未设置密码' : row.password;
 			},
 			//点击分页
 			handleCurrentChange(val) {
@@ -225,8 +223,10 @@
 					"data": {
 						"name": this.filters.name
 					},
+					"page": {
 					"pageNo": this.page,
 					"pageSize": this.pagesize
+					}
 				}).then((res) => {
 					this.total = res.data.data.total;
 					this.users = res.data.data.list;
@@ -244,22 +244,20 @@
 					type: 'warning'
 				}).then(() => {
 					this.listLoading = true;
-					//NProgress.start();
 					let ID = row.id;
-				this.$axios.delete('/webgame/user/del/'+ID).then((res) => {
-						this.listLoading = false;
-						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
-						});
-						this.getUsers();
-					}).catch(() => {
-           this.$message({
-							message: '该用户不可删除',
-							type: 'error'
-						});
-				});
+					this.$axios.delete('/webgame/user/del/'+ID).then((res) => {
+							this.listLoading = false;
+							this.$message({
+								message: '删除成功',
+								type: 'success'
+							});
+							this.getUsers();
+						}).catch((error) => {
+							this.$message({
+								message: error,
+								type: 'error'
+							});
+					    });
 				})
 			},
 			//显示编辑界面
@@ -267,7 +265,7 @@
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-		// 	//显示新增界面
+	 	  //显示新增界面
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
@@ -277,7 +275,7 @@
 					state: '',
 				};
 			},
-		// 	//编辑
+		 //编辑
 			editSubmit () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
@@ -286,16 +284,21 @@
 							// let para = Object.assign({}, this.editForm);
 							let para = this.editForm;
 							let ID=this.editForm.id;
-						this.$axios.post('/webgame/user/update/'+ID,para).then((res) => {
-								this.editLoading = false;
-								this.$message({
-									message: '修改成功',
-									type: 'success'
+							this.$axios.post('/webgame/user/update/'+ID,para).then((res) => {
+									this.editLoading = false;
+									this.$message({
+										message: '修改成功',
+										type: 'success'
+									});
+									this.$refs['editForm'].resetFields();
+									this.editFormVisible = false;
+									this.getUsers();
+								}).catch((error) => {
+									this.$message({
+										message: error,
+										type: 'error'
+									});
 								});
-								this.$refs['editForm'].resetFields();
-								this.editFormVisible = false;
-								this.getUsers();
-							});
 						});
 					}
 				});
@@ -326,7 +329,11 @@
 								this.addFormVisible = false;
 								this.getUsers();
 								}
-								
+							}).catch((error) => {
+								this.$message({
+									message: error,
+									type: 'error'
+								});
 							});
 						});
 					}
@@ -381,8 +388,8 @@
 	  //     }))
 		// 	},
 			resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+				this.$refs[formName].resetFields();
+			}
 		 },
 		mounted() {
 		

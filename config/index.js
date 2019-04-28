@@ -5,18 +5,20 @@
 const path = require('path')
 
 module.exports = {
+  //dev开发环境
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
+   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
     assetsPublicPath: '/',
+     // proxyTable 代理的接口（可跨域）
+    // 使用方法：https://vuejs-templates.github.io/webpack/proxy.html
     proxyTable: {
-     
         '/api': {
-          target: 'http://192.168.2.150:9999',
+          target: 'http://192.168.2.180:9999',
           changeOrigin: true, //跨域
           pathRewrite: {
-            '^/api': ''
+            '^/api': ''//  /api
           }
         },
         secure:false
@@ -25,7 +27,9 @@ module.exports = {
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
+    //端口号
     port: 9090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+   //是否自动打开浏览器
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -61,7 +65,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
