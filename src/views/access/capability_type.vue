@@ -6,7 +6,7 @@
 				<div slot="header" class="clearfix">
 						<span>查询</span>
 				</div>
-        <el-form :inline="true" :model="filters" ref="filters">
+			<el-form :inline="true" :model="filters" ref="filters">
 				<el-form-item label="类型名称" prop="name">
 					<el-input v-model="filters.name" placeholder="请输入"></el-input>
 				</el-form-item>
@@ -19,7 +19,7 @@
 		</el-col>
 		<!-- button -->
     <el-col :span="24" class="btns">
-     <el-button type="success" size="mini" icon="el-icon-edit" @click="handleAdd">新增</el-button>
+     <el-button type="success" size="mini" icon="el-icon-edit" @click="handleAdd" v-has="'user_addBtn'">新增</el-button>
 		 <el-button type="danger" size="mini" icon="el-icon-delete">批量删除</el-button>
 		</el-col>
 		<!--列表-->
@@ -39,8 +39,8 @@
 			</el-table-column> 
 			<el-table-column label="操作" width="150" fixed="right">
 				<template scope="scope">
-					<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button size="mini" @click="handleEdit(scope.$index, scope.row)" >编辑</el-button>
+					<el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)" v-has="'user_delBtn'">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

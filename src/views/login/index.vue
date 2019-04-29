@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { setName, getName, setPassword, getPassword } from "../../utils/auth";
+import { setName, getName, setPassword, getPassword} from "../../utils/auth";
 // import md5 from 'js-md5';
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -119,7 +119,8 @@ export default {
                 type: "error"
               });
             } else {
-              localStorage.setItem('sysUserName',res.data.data.name);
+              localStorage.setItem('sysUserName',res.data.data.user.name);
+              localStorage.setItem('token',res.data.data.user.name);
               if (this.checked === true) {//如果选择记住密码，就保存cookie
                 setName(this.loginForm.username);
                 setPassword(this.loginForm.password);
@@ -129,6 +130,7 @@ export default {
               
               }
               this.$router.push({ path: "/capability_type" });
+              sessionStorage.setItem('permissions',JSON.stringify(res.data.data.permissions));
             }
           }).catch(function (error) {
               this.$message({

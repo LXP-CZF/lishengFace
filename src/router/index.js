@@ -36,7 +36,7 @@ export default new Router({
       iconCls: 'el-icon-news',//图标样式class
       meta: { title: '能力接入管理' },
       children: [
-          { path: '/capability_type', component: capability_type, name: '能力类型管理',meta: { title: '能力类型管理' }},
+          { path: '/capability_type', component: capability_type, name: '能力类型管理',meta: { title: '能力类型管理',roles: ['admin']}},
           { path: '/test', component: test, name: '能力引擎管理' },
           // { path: '/capability_units', component: capability_units, name: '能力单元管理' },
           // { path: '/capability_engineversion', component: capability_engineversion, name: '能力引擎版本管理' },  

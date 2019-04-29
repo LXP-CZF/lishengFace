@@ -13,7 +13,7 @@ import QS from 'qs';
 // } else if (process.env.NODE_ENV == 'production') { 
 //     axios.defaults.baseURL = 'http://***********/';
 // }
-axios.defaults.baseURL = 'http://192.168.2.180:9999';
+axios.defaults.baseURL = '/api';
 //设置超时时间
 axios.defaults.timeout = 10000;
 // post请求头

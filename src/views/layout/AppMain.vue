@@ -1,7 +1,7 @@
 <template>
 <el-main :style="{height:isHeight-36+'px'}">
   <!-- <breadcrumb></breadcrumb> -->
-  <!-- <tagsView></tagsView> -->
+  <tagsView></tagsView>
   <section class="app-main" >
     <transition name="fade" mode="out-in">
         <router-view></router-view>

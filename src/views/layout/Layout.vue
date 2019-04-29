@@ -6,7 +6,7 @@
         <vueaside></vueaside>
         </div>
         <div style="overflow:hidden;"> 
-        <tagsView></tagsView>
+        <!-- <tagsView></tagsView> -->
        <vuemain></vuemain>
        </div>
       </div>
