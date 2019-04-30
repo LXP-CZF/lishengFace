@@ -105,39 +105,53 @@ export default {
         //如果验证通过
         if (valid) {
           this.logining = true;
-          this.$axios.post('/webgame/login/login',{
-            "name": this.loginForm.username,
+          this.$axios.post('http://192.168.2.180:9777/jwt/token',{
+            "username": this.loginForm.username,
             "password": this.loginForm.password
-          }).then((res) => {
-            this.logining = false;
-            let msg = res.data.msg;
-            let code = res.data.code;
-            // console.log(data);
-            if (code !== 200) {
-              this.$message({
-                message: msg,
-                type: "error"
-              });
-            } else {
-              localStorage.setItem('sysUserName',res.data.data.user.name);
-              localStorage.setItem('token',res.data.data.user.name);
-              if (this.checked === true) {//如果选择记住密码，就保存cookie
-                setName(this.loginForm.username);
-                setPassword(this.loginForm.password);
-              } else {
-                setName("");
-                setPassword("");
-              
-              }
-              this.$router.push({ path: "/capability_type" });
-              sessionStorage.setItem('permissions',JSON.stringify(res.data.data.permissions));
-            }
+          }).then((res)=>{
+            localStorage.setItem('token',res.data.data);
+            console.log( localStorage.getItem('token',res.data.data))
+            this.$router.push({ path: "/capability_type" });
           }).catch(function (error) {
-              this.$message({
+               this.$message({
                       message: error,
                       type: "error"
                     });
-				});
+			   });
+        //   this.$axios.post('/webgame/login/login',{
+        //     "name": this.loginForm.username,
+        //     "password": this.loginForm.password
+        //   }).then((res) => {
+        //     this.logining = false;
+        //     let msg = res.data.msg;
+        //     let code = res.data.code;
+        //     // console.log(data);
+        //     if (code !== 200) {
+        //       this.$message({
+        //         message: msg,
+        //         type: "error"
+        //       });
+        //     } else {
+        //       localStorage.setItem('sysUserName',res.data.data.user.name);
+        //       localStorage.setItem('token',res.data.data.user.name);
+        //       if (this.checked === true) {//如果选择记住密码，就保存cookie
+        //         setName(this.loginForm.username);
+        //         setPassword(this.loginForm.password);
+                
+        //       } else {
+        //         setName("");
+        //         setPassword("");
+              
+        //       }
+        //       this.$router.push({ path: "/capability_type" });
+        //       localStorage.setItem('permissions',JSON.stringify(res.data.data.permissions));
+        //     }
+        //   }).catch(function (error) {
+        //       this.$message({
+        //               message: error,
+        //               type: "error"
+        //             });
+				// });
         } else {
           console.log("error submit!!");
           return false;

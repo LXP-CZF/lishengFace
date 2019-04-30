@@ -8,7 +8,7 @@ const tagsView = {
       if (state.visitedViews.some(v => v.path === view.fullPath)) return
       state.visitedViews.push({
         name: view.name,
-        path: view.fullPath,
+        path: view.fullPath,//$route.fullPath	完成解析后的 URL，包含查询参数和 hash 的完整路径
         title: view.meta.title || 'no-name'
       })
       if (!view.meta.noCache) {

@@ -54,6 +54,7 @@
 					//type: 'warning'
 				}).then(() => {
 //					sessionStorage.removeItem('user');
+          localStorage.removeItem('token'); 
 					_this.$router.push('/');
 				}).catch(() => {
 
