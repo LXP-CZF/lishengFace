@@ -89,7 +89,7 @@ const router= new Router({
         iconCls: 'el-icon-location',//图标样式class
         
       }, */
-      { path: '*', component: NotFoundComponent }
+      { path: '*', component: NotFoundComponent, hidden: true  }
   
   ]
 })

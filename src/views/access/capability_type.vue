@@ -24,7 +24,7 @@
 		</el-col>
 		<!--列表-->
 		<h3>{{title}}</h3>
-		<el-table size="mini" :data="users" highlight-current-row v-loading="listLoading"  :default-sort="{prop: 'id', order: 'descending'}" style="width: 97%; margin-top: 7px;">
+		<el-table size="mini" :data="users" ref="table" highlight-current-row v-loading="listLoading"  :default-sort="{prop: 'id', order: 'descending'}" style="width: 97%; margin-top: 7px;">
 			<el-table-column type="selection" width="100">
 			</el-table-column>
 			<el-table-column  prop="id" label="ID"   width="160" sortable>
@@ -112,6 +112,7 @@
 <script>
 	import util from '@/common/js/util'
 	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '@/api/api';
+	import {getUserMenus,getInfo} from '../../api/login'
   
 	export default {
 		data() {
@@ -219,17 +220,18 @@
 			//获取用户列表,分页
 			getUsers() {
 				this.listLoading = true;
-				this.$axios.post('/webgame/user/findAllByPage',{
-					"data": {
-						"name": this.filters.name
-					},
-					"page": {
-					"pageNo": this.page,
-					"pageSize": this.pagesize
-					}
-				}).then((res) => {
-					this.total = res.data.data.total;
-					this.users = res.data.data.list;
+				// this.$axios.post('/webgame/user/findAllByPage',{
+				// 	"data": {
+				// 		"name": this.filters.name
+				// 	},
+				// 	"page": {
+				// 	"pageNo": this.page,
+				// 	"pageSize": this.pagesize
+				// 	}
+				// })
+				
+				getInfo(localStorage.getItem('token')).then((res) => {
+					console.log(res);
 					this.listLoading = false;
 				}).catch(function (error) {
 					this.$message({

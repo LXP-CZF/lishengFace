@@ -1,27 +1,34 @@
-import request from '@/utils/request'
+import fetch from '@/utils/fetch'
 
 export function loginByUsername(username, password) {
   const data = {
     username,
     password
   }
-  return request({
-    url: '/login/login',
+  return fetch({
+    url: '/api/auth/jwt/token',
     method: 'post',
     data
   })
 }
 
-export function logout() {
-  return request({
+export function logout(token) {
+  return fetch({
     url: '/login/logout',
-    method: 'post'
+    method: 'post',
+    params: { token }
   })
 }
-
-export function getUserInfo(token) {
-  return request({
-    url: '/user/info',
+export function getInfo(token) {
+  return fetch({
+    url: '/api/admin/user/front/info',
+    method: 'get',
+    params: { token }
+  });
+}
+export function getUserMenus(token) {
+  return fetch({
+    url: '/api/admin/user/front/menus',
     method: 'get',
     params: { token }
   })

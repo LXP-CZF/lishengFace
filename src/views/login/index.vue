@@ -35,6 +35,7 @@
 
 <script>
 import { setName, getName, setPassword, getPassword} from "../../utils/auth";
+import {loginByUsername} from "../../api/login"
 // import md5 from 'js-md5';
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -49,8 +50,8 @@ export default {
     return {
       logining: false,
       loginForm: {
-        username: "",
-        password: ""
+        username: "admin",
+        password: "admin"
       },
       // userToken: "",
       rulesForm: {
@@ -90,8 +91,8 @@ export default {
       })();
     };
     //用户选择记住密码时，下次打开登录页通过cookie自动获取用户名和密码
-    this.loginForm.username = getName("name");
-    this.loginForm.password = getPassword("password");
+    // this.loginForm.username = getName("name");
+    // this.loginForm.password = getPassword("password");
   },
   methods: {
     ...mapActions(['getheight']),
@@ -105,10 +106,8 @@ export default {
         //如果验证通过
         if (valid) {
           this.logining = true;
-          this.$axios.post('http://192.168.2.180:9777/jwt/token',{
-            "username": this.loginForm.username,
-            "password": this.loginForm.password
-          }).then((res)=>{
+          // this.$router.push({ path: "/capability_type" });
+          loginByUsername(this.loginForm.username,this.loginForm.password).then(res=>{
             localStorage.setItem('token',res.data.data);
             console.log( localStorage.getItem('token',res.data.data))
             this.$router.push({ path: "/capability_type" });
@@ -118,6 +117,19 @@ export default {
                       type: "error"
                     });
 			   });
+        //   this.$axios.post('http://192.168.2.180:8765/api/auth/jwt/token',{
+        //     "username": this.loginForm.username,
+        //     "password": this.loginForm.password
+        //   }).then((res)=>{
+        //     localStorage.setItem('token',res.data.data);
+        //     console.log( localStorage.getItem('token',res.data.data))
+        //     this.$router.push({ path: "/capability_type" });
+        //   }).catch(function (error) {
+        //        this.$message({
+        //               message: error,
+        //               type: "error"
+        //             });
+			  //  });
         //   this.$axios.post('/webgame/login/login',{
         //     "name": this.loginForm.username,
         //     "password": this.loginForm.password
