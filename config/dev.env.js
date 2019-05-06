@@ -8,5 +8,5 @@ module.exports = merge(prodEnv, {
    // 将两个配置对象合并，最终结果是 NODE_ENV: '"development"'
   NODE_ENV: '"development"',
   MOCK: 'true',
-  API_HOST: '"http://192.168.2.112:9527"'
+  API_HOST: '"http://192.168.2.180:9527"'
 })

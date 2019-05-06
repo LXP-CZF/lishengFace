@@ -1,0 +1,321 @@
+<template>
+	<section>
+		<!--工具条-->
+		<el-col :span="24" class="selectbar">
+			<el-form :inline="true" :model="filters">
+				<el-form-item>
+					<el-input v-model="filters.name" placeholder="姓名或账户" style="width:115%;"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" size="small" icon="el-icon-search" @click="handleFilter">查询</el-button>
+					<el-button type="primary"  size="small" icon="el-icon-edit" @click="handleAdd">新增</el-button>
+				</el-form-item>
+			</el-form>
+		</el-col>
+		<!--列表-->
+		<el-table :data="users" border highlight-current-row v-loading="listLoading" style="width: 97%;">
+            <el-table-column align="center" label="序号" width="65"> <template scope="scope">
+                <span>{{scope.row.id}}</span>
+            </template> </el-table-column>
+            <el-table-column width="200" align="center" label="姓名"> <template scope="scope">
+                <span>{{scope.row.name}}</span>
+            </template> </el-table-column>
+            <el-table-column width="110" align="center" label="账户"> <template scope="scope">
+                    <span>{{scope.row.username}}</span>
+                </template> </el-table-column>
+            <el-table-column width="110" align="center" label="性别"> <template scope="scope">
+                    <span>{{scope.row.sex}}</span>
+                </template> </el-table-column>
+            <el-table-column width="300" align="center" label="备注"> <template scope="scope">
+                    <span>{{scope.row.description}}</span>
+                </template> </el-table-column>
+            <el-table-column width="180" align="center" label="最后时间"> <template scope="scope">
+                <span>{{scope.row.updTime}}</span>
+                </template> </el-table-column>
+            <el-table-column width="200" align="center" label="最后更新人"> <template scope="scope">
+                    <span>{{scope.row.updName}}</span>
+                </template> </el-table-column>
+            <el-table-column align="center" label="操作" width="150" fixed="right"> <template scope="scope">
+                <el-button  size="mini" type="success" @click="handleEdit(scope.$index,scope.row)">编辑
+                </el-button>
+                <el-button  size="mini" type="danger" @click="handleDel(scope.$index,scope.row)">删除
+                </el-button>
+            </template> 
+            </el-table-column>
+		</el-table>
+
+		<!--工具条-->
+		<el-col :span="24" class="toolbar">
+			 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-sizes="[10,20,30, 50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
+		</el-col>
+
+		<!--编辑界面-->
+		<el-dialog title="编辑" :visible.syn="editFormVisible" @close="editFormVisible=false">
+			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+				<el-form-item :label="label.username" prop="username">
+					<el-input v-model="editForm.username" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item :label="label.name" prop="name">
+					<el-input v-model="editForm.name" auto-complete="off"></el-input>
+				</el-form-item>
+				 <el-form-item :label="label.sex" prop="sex">
+					<el-select v-model="editForm.sex"  placeholder="请选择" >
+						<el-option label="男" value="男" ></el-option>
+						<el-option label="女" value="女"></el-option>
+					</el-select>
+			  </el-form-item>
+				<el-form-item :label="label.description">
+					<el-input type="textarea" v-model="editForm.description"></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="editFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--新增界面-->
+		<el-dialog title="新增" :visible.syn="addFormVisible" @close="addFormVisible=false">
+			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+				<el-form-item :label="label.username" prop="username">
+					<el-input v-model="addForm.username" auto-complete="off" placeholder="请输入姓名"></el-input>
+				</el-form-item>
+				<el-form-item :label="label.name" prop="name">
+					<el-input v-model="addForm.name" auto-complete="off" placeholder="请输入账户"></el-input>
+				</el-form-item>
+				<el-form-item :label="label.password" prop="password">
+					<el-input type="password" v-model="addForm.password" auto-complete="off" placeholder="请输入密码"></el-input>
+				</el-form-item>
+				<el-form-item :label="label.sex" prop="sex">
+					<el-select v-model="addForm.sex"  placeholder="请选择" >
+						<el-option label="男" value="男" ></el-option>
+						<el-option label="女" value="女"></el-option>
+					</el-select>
+			  </el-form-item>
+				<el-form-item :label="label.description">
+					<el-input type="textarea" v-model="addForm.description" placeholder="请输入内容"></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="addFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+			</div>
+		</el-dialog>
+	</section>
+</template>
+
+<script>
+	import { getUsersPage,UpdateUsers,delUser,AddUsers } from '@/api/users.js'
+	export default {
+		data() {
+			return {
+				filters: {
+					name: ''
+				},
+				users: [],
+				total: 0,
+				page: 1,
+        limit:10,
+				label:{
+					name:'账户',
+					username:'姓名',
+					password:'密码',
+					sex:'性别',
+					description:'描述'
+				},
+				listLoading: false,
+				downloadLoading:false,
+				sels: [],//列表选中列
+
+				editFormVisible: false,//编辑界面是否显示
+				editLoading: false,
+				editFormRules: {
+					name: [
+						{ required: true, message: '请输入账户', trigger: 'blur' }
+					],
+					username:[
+						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					]
+				},
+				//编辑界面数据
+				editForm: {
+					id: 0,
+					name: '',
+					username:'',
+					sex: '',
+					description:''
+				},
+
+				addFormVisible: false,//新增界面是否显示
+				addLoading: false,
+				addFormRules: {
+					name: [
+						{ required: true, message: '请输入账户', trigger: 'blur' }
+					],
+					username: [
+						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					],
+					password:[
+						{ required: true, message: '请输入密码', trigger: 'blur' }
+					]
+				},
+				//新增界面数据
+				addForm: {
+					name: '',
+					username:'',
+					password:'',
+					sex: '',
+					description:''
+				}
+			}
+		},
+		mounted() {
+			this.getUsers();
+		},
+		methods: {
+			handleSizeChange(val) {
+					this.limit = val;
+					this.getUsers();
+			},
+			handleCurrentChange(val) {
+				this.page = val;
+				this.getUsers();
+			},
+			//获取用户列表
+			getUsers() {
+				let para = {       
+					page: this.page,
+          limit:this.limit,
+				 	name:this.filters.name
+				};
+				this.listLoading = true;
+				//NProgress.start();
+				getUsersPage(para).then((res) => {
+					this.total = res.data.data.total;
+					this.users = res.data.data.rows;
+					this.listLoading = false;
+					//NProgress.done();
+				});
+			},
+			handleFilter(){
+				this.getUsers();
+			},
+			//删除
+			handleDel: function (index, row) {
+				this.$confirm('确认删除该记录吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					this.listLoading = true;
+					//NProgress.start();
+					delUser(row.id).then((res) => {
+						this.listLoading = false;
+						//NProgress.done();
+						this.$message({
+							message: '删除成功',
+							type: 'success'
+						});
+						this.getUsers();
+					}).catch((error) => {
+						this.$message({
+							message: error,
+							type: 'error'
+						});
+				});
+				}).catch(() => {
+					
+				});
+			},
+			//显示编辑界面
+			handleEdit: function (index, row) {
+				this.editFormVisible = true;
+				this.editForm = Object.assign({}, row);
+			},
+			//显示新增界面
+			handleAdd: function () {
+				this.addFormVisible = true;
+				this.addForm = {
+					name: '',
+					username:'',
+					password:'',
+					sex: '男',
+					description:''
+				};
+			},
+			//编辑
+			editSubmit: function () {
+				this.$refs.editForm.validate((valid) => {
+					if (valid) {
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							this.editLoading = true;
+							//NProgress.start();
+							let para = Object.assign({}, this.editForm);
+							// para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+							UpdateUsers(this.editForm.id,para).then((res) => {
+								this.editLoading = false;
+								//NProgress.done();
+								this.$message({
+									message: '修改成功',
+									type: 'success'
+								});
+								this.$refs['editForm'].resetFields();
+								this.editFormVisible = false;
+								this.getUsers();
+							}).catch((error) => {
+									this.$message({
+										message: error,
+										type: 'error'
+									});
+							});
+						});
+					}
+				});
+			},
+			//新增
+			addSubmit: function () {
+				this.$refs.addForm.validate((valid) => {
+					if (valid) {
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							this.addLoading = true;
+							//NProgress.start();
+							let para = Object.assign({}, this.addForm);
+							// para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+							AddUsers(para).then((res) => {
+								this.addLoading = false;
+								//NProgress.done();
+								this.$message({
+									message: '新增成功',
+									type: 'success'
+								});
+								this.$refs['addForm'].resetFields();
+								this.addFormVisible = false;
+								this.getUsers();
+							}).catch((error) => {
+									this.$message({
+										message: error,
+										type: 'error'
+									});
+							});
+						});
+					}
+				});
+			},
+		},
+	
+	}
+
+</script>
+
+<style scoped>
+.el-dialog{text-align: left;}
+.selectbar{
+	padding-bottom: 0px; 
+	text-align: left;
+	margin: 0px 0px -10px 0px;
+}
+.toolbar{
+	width:97%;
+	background:#fff;
+	padding:20px 30px;
+	text-align: left;
+}
+</style>

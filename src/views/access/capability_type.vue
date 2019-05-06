@@ -230,15 +230,15 @@
 				// 	}
 				// })
 				
-				getInfo(localStorage.getItem('token')).then((res) => {
-					console.log(res);
-					this.listLoading = false;
-				}).catch(function (error) {
-					this.$message({
-									message: error,
-									type: 'error'
-								});
-				});
+				// getInfo().then((res) => {
+				// 	console.log(res);
+				// 	this.listLoading = false;
+				// }).catch(function (error) {
+				// 	this.$message({
+				// 					message: error,
+				// 					type: 'error'
+				// 				});
+				// });
 			},
 			//删除
 			handleDel: function (index, row) {

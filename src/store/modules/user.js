@@ -6,7 +6,7 @@ const user = {
     user: '',
     status: '',
     code: '',
-    token:localStorage.getItem('token'),
+    token:getToken(),
     name: '',
     avatar: '',
     introduction: '',

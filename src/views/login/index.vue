@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { setName, getName, setPassword, getPassword} from "../../utils/auth";
+import { setName, getName, setPassword, getPassword,getToken,setToken} from "../../utils/auth";
 import {loginByUsername} from "../../api/login"
 // import md5 from 'js-md5';
 import { mapGetters, mapActions } from "vuex";
@@ -108,9 +108,17 @@ export default {
           this.logining = true;
           // this.$router.push({ path: "/capability_type" });
           loginByUsername(this.loginForm.username,this.loginForm.password).then(res=>{
-            localStorage.setItem('token',res.data.data);
-            console.log( localStorage.getItem('token',res.data.data))
-            this.$router.push({ path: "/capability_type" });
+            if(res.data.status===200){
+              setToken(res.data.data);
+              // console.log(getToken())
+              this.$router.push({ path: "/userManager" });
+            }
+            else{
+              this.$message({
+                      message: res.data.message,
+                      type: "error"
+                    });
+            }
           }).catch(function (error) {
                this.$message({
                       message: error,

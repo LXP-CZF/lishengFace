@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {getToken} from '@/utils/auth'
 
 // 懒加载方式，当路由被访问的时候才加载对应组件
 const Home = resolve => require(['@/views/layout/Layout'], resolve)
@@ -12,6 +13,7 @@ const editTabel = resolve => require(['@/views/Characteristics/editTabel'], reso
 const test = resolve => require(['@/views/Characteristics/test'], resolve)
 const login = resolve => require(['@/views/login/index'], resolve)
 const NotFoundComponent = resolve =>require(['@/components/errorPage/401'], resolve)
+const userManager=resolve =>require(['@/views/systemsManagement/userManagement/userManager'], resolve)
 Vue.use(Router)
 
 const router= new Router({
@@ -82,6 +84,20 @@ const router= new Router({
            
         ]
       },
+      {
+        path: '/Home',
+        component: Home,
+        name:'系统管理',
+        iconCls: 'el-icon-document',//图标样式class
+        meta: { title: '系统管理' },
+        children: [
+               { path: '/userManager', component: userManager,name: '用户管理',meta: { title: '用户管理' } },
+            // { path: '/table', component: table, name: '识别策略管理',meta: { title: '识别策略管理' } },
+            // { path: '/admin', component: admin, name: '识别策略组管理',meta: { title: '识别策略组管理' } },
+            // { path: '/Test', component: Test, name: '识别场景管理',meta: { title: '识别场景管理' } },
+            // { path: '/Test', component: Test, name: '识别阈值管理',meta: { title: '识别阈值管理' } },   
+        ]
+      },
      /*  {
         path: '/Home',
         component: Home,
@@ -99,7 +115,7 @@ router.beforeEach((to, from, next) => {
   if(to.path === '/')  {  next()  } 
   //进入的不是登录路由
   else {    
-    if(!localStorage.getItem('token'))
+    if(!getToken())
      {
        next({ path: '/' })
     } 

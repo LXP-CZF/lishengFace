@@ -16,13 +16,13 @@ module.exports = {
     // 使用方法：https://vuejs-templates.github.io/webpack/proxy.html
     proxyTable: {
       '/jwt': {
-        target: 'http://192.168.2.112:9527',
+        target: 'http://192.168.2.180:9527',
         pathRewrite: {
           '^/jwt': '/jwt'
         },
       },
         '/api': {
-          target: 'http://192.168.2.112:9527',
+          target: 'http://192.168.2.180:9527',
           changeOrigin: true, //跨域
           pathRewrite: {
             '^/api': '/api'//  /api
