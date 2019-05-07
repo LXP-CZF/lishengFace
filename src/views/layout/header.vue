@@ -29,11 +29,12 @@
 
 <script>
   import {mapGetters,mapActions} from 'vuex'
-  import nxhamburger from '@/components/nx-hamburger'
+	import nxhamburger from '@/components/nx-hamburger'
+	import {getToken,removeToken} from '@/utils/auth'
 	export default{
 		data(){
 			return{
-				sysUserName: localStorage.getItem('sysUserName'),
+				sysUserName: 'admin',
 				sysUserAvatar: '',
 			}
 		},
@@ -54,7 +55,7 @@
 					//type: 'warning'
 				}).then(() => {
 //					sessionStorage.removeItem('user');
-          localStorage.removeItem('token'); 
+          removeToken('token'); 
 					_this.$router.push('/');
 				}).catch(() => {
 

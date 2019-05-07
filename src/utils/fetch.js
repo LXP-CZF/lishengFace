@@ -20,6 +20,17 @@ service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = getToken(); // 让每个请求携带token--['Authorization']为自定义key 请根据实际情况自行修改
   }
+  // if (config.method == 'post') {
+  //   config.data = {
+  //     ...config.data,
+  //     _t: Date.parse(new Date()) / 1000
+  //   }
+  // } else if (config.method == 'get') {
+  //   config.params = {
+  //     _t: Date.parse(new Date()) / 1000,
+  //     ...config.params
+  //   }
+  // }
   return config;
 }, error => {
   // Do something with request error

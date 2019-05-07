@@ -115,7 +115,7 @@
 				users: [],
 				total: 0,
 				page: 1,
-        limit:10,
+        		limit:10,
 				label:{
 					name:'账户',
 					username:'姓名',
@@ -185,7 +185,7 @@
 			getUsers() {
 				let para = {       
 					page: this.page,
-          limit:this.limit,
+                    limit:this.limit,
 				 	name:this.filters.name
 				};
 				this.listLoading = true;
@@ -195,6 +195,11 @@
 					this.users = res.data.data.rows;
 					this.listLoading = false;
 					//NProgress.done();
+				}).catch((error) => {
+						this.$message({
+							message: error,
+							type: 'error'
+						});
 				});
 			},
 			handleFilter(){
